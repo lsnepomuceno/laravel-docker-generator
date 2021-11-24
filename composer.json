@@ -1,6 +1,6 @@
 {
     "name": "lsnepomuceno/laravel-docker-generator",
-    "description": "A description for laravel-docker-generator.",
+    "description": "A package that allows you to generate simple and fast Docker configurations for your Laravel application!",
     "type": "package",
     "license": "MIT",
     "homepage": "https://github.com/lsnepomuceno/laravel-docker-generator",
@@ -21,8 +21,17 @@
         }
     ],
     "require": {
+        "php": "^7.4 || ^8.0",
         "illuminate/support": "^7.0|^8.0",
+        "illuminate/console": "^8.0",
         "symfony/yaml": "^5.3"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.20.1",
+        "nunomaduro/collision": "^5.9.0"
+    },
+    "suggest": {
+        "lsnepomuceno/laravel-a1-pdf-sign": "Sign PDF files with valid x509 certificates."
     },
     "autoload": {
         "psr-4": {
@@ -40,11 +49,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Lsnepomuceno\\LaravelDockerGenerator\\LaravelDockerGeneratorServiceProvider"
+                "Lsnepomuceno\\LaravelDockerGenerator\\Providers\\LaravelDockerGeneratorServiceProvider"
             ]
         }
-    },
-    "require-dev": {
-        "orchestra/testbench": "^6.0"
     }
 }

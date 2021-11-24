@@ -1,8 +1,9 @@
 <?php
 
-namespace Lsnepomuceno\LaravelDockerGenerator;
+namespace Lsnepomuceno\LaravelDockerGenerator\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Lsnepomuceno\LaravelDockerGenerator\Commands\DockerGenerate;
 
 class LaravelDockerGeneratorServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,10 @@ class LaravelDockerGeneratorServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                DockerGenerate::class,
+            ]);
+        }
     }
 }
