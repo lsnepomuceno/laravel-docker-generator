@@ -4,6 +4,11 @@ namespace Lsnepomuceno\LaravelDockerGenerator\ProcessesTraits;
 
 trait SetPHPVersion
 {
+    /**
+     * Define a PHP image version
+     *
+     * @return self
+     */
     public function setPhpVersion(): self
     {
         $this->processImages->php = $this->choice(

@@ -5,11 +5,11 @@ namespace Lsnepomuceno\LaravelDockerGenerator\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Fluent;
 use Lsnepomuceno\LaravelDockerGenerator\ValidateYmlFile;
-use Lsnepomuceno\LaravelDockerGenerator\ProcessesTraits\{SetDB, SetPHPVersion, SetWebServer};
+use Lsnepomuceno\LaravelDockerGenerator\ProcessesTraits\{SetComposer, SetDB, SetNetwork, SetPHPVersion, SetWebServerAndVhost};
 
 class DockerGenerate extends Command
 {
-    use SetPHPVersion, SetDB, SetWebServer;
+    use SetPHPVersion, SetDB, SetWebServerAndVhost, SetComposer, SetNetwork;
 
     /**
      * The name and signature of the console command.
@@ -43,8 +43,8 @@ class DockerGenerate extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->validateYmlFile      = new ValidateYmlFile;
-        $this->processImages = new Fluent;
+        $this->validateYmlFile = new ValidateYmlFile;
+        $this->processImages   = new Fluent;
     }
 
     /**
@@ -54,22 +54,24 @@ class DockerGenerate extends Command
      */
     public function handle(): int
     {
-        if ($this->validateYmlFile->fromRootFolder()) {
-            $continue = $this->choice(
-                'Docker-compose.yml file exists, do you want to continue?',
-                ['Yes', 'No'],
-                0
-            );
-            dd($continue);
-        } else {
-            $this->defaultDockerComposeProcess();
+        if (
+            $this->validateYmlFile->fromRootFolder() &&
+            !$this->confirm('Docker-compose.yml file exists, do you want to delete current file and continue?', false)
+        ) {
+            $this->info('Docker generator canceled.');
+            return Command::SUCCESS;
         }
+
+        $this->defaultDockerComposeProcess();
+
         return Command::SUCCESS;
     }
 
     private function defaultDockerComposeProcess()
     {
-        $this->setWebServer()
+        $this->setWebServerAndVhost()
+            ->setNetWork()
+            ->setComposer()
             ->setPhpVersion()
             ->setDataBaseDriver();
 
