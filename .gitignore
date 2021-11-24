@@ -1,0 +1,15 @@
+/.settings
+/.project
+/.buildpath
+/composer.phar
+/vendor
+/nbproject
+.vagrant
+Vagrantfile
+.idea
+.php_cs.cache
+composer.lock
+.phpunit.result.cache
+*.bak
+demo.php
+*Zone.Identifier
